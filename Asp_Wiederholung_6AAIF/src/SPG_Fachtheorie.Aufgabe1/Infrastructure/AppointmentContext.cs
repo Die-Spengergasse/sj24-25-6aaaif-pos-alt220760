@@ -26,6 +26,8 @@ namespace SPG_Fachtheorie.Aufgabe1.Infrastructure
             modelBuilder.Entity<Employee>().HasDiscriminator(e => e.Type);
             modelBuilder.Entity<Payment>().Property(p => p.PaymentType)
                 .HasConversion<string>();
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<CashDesk>().HasKey(cd => cd.Number);
         }
 
         public void Seed()
