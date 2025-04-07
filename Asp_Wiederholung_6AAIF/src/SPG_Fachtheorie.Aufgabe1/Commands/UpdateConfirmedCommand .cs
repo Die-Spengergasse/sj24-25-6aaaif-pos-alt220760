@@ -2,19 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SPG_Fachtheorie.Aufgabe3.Dtos
+namespace SPG_Fachtheorie.Aufgabe1.Commands
 {
-    public class UpdateConfirmedCommand : IValidatableObject
+    public record UpdateConfirmedCommand(DateTime Confirmed) : IValidatableObject
     {
-        [Required]
-        public DateTime Confirmed { get; set; }
-
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
-            if (Confirmed > DateTime.Now.AddMinutes(1))
+            var maxAllowedTime = DateTime.UtcNow.AddMinutes(1);
+            if (Confirmed > maxAllowedTime)
             {
                 yield return new ValidationResult(
-                    "Confirmed date must not be more than 1 minute in the future.",
+                    $"Confirmed date cannot be more than 1 minute in the future.",
                     new[] { nameof(Confirmed) });
             }
         }

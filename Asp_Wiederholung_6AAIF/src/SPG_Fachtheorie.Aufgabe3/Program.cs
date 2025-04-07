@@ -1,10 +1,12 @@
 using Microsoft.EntityFrameworkCore;
 using SPG_Fachtheorie.Aufgabe1.Infrastructure;
+using SPG_Fachtheorie.Aufgabe1.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Suche im Programmcode nach allen Klassen mit [ApiController]
 builder.Services.AddControllers();
+builder.Services.AddScoped<EmployeeService>();
 // SERVICE PROVIDER
 // Stellt konfigurierte Instanzen von Klassen bereit
 builder.Services.AddDbContext<AppointmentContext>(opt =>
@@ -16,7 +18,8 @@ builder.Services.AddDbContext<AppointmentContext>(opt =>
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
+builder.Services.AddScoped<EmployeeService>();
+builder.Services.AddScoped<PaymentService>();
 var app = builder.Build();
 app.UseHttpsRedirection();   // Wird mit http zugegriffen, wird auf https weitergeleitet.
 
@@ -36,4 +39,6 @@ if (app.Environment.IsDevelopment())
 // Request pipeline
 app.MapControllers();  // Passt ein Controller zur Adresse? Ja: Diesen ausführen.
 app.Run();
+
+
 

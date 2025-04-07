@@ -1,17 +1,18 @@
-﻿public class CashDesk
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace SPG_Fachtheorie.Aufgabe1.Model
 {
-    public int Number { get; set; }          // PK
-
-    public string Location { get; set; } = "DefaultLocation";
-
-    public CashDesk(int number, string location = "DefaultLocation")
+    public class CashDesk
     {
-        Number = number;
-        Location = location;
-    }
+        protected CashDesk() { }
+        public CashDesk(int number)
+        {
+            Number = number;
+        }
 
-    public CashDesk() // EF Core braucht public ctor
-    {
-        Location = "DefaultLocation";
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Number { get; set; }
     }
 }
