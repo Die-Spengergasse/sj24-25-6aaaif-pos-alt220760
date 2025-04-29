@@ -4,6 +4,8 @@ using SPG_Fachtheorie.Aufgabe1.Model;
 using System;
 using System.Linq;
 using Xunit;
+using Microsoft.EntityFrameworkCore.InMemory;
+
 
 namespace SPG_Fachtheorie.Aufgabe1.Test
 {
@@ -12,15 +14,17 @@ namespace SPG_Fachtheorie.Aufgabe1.Test
     {
         private AppointmentContext GetEmptyDbContext()
         {
-            var options = new DbContextOptionsBuilder<AppointmentContext>()
-                .UseSqlite(@"Data Source=cash.db")
+            // Verwenden eines eindeutigen Datenbanknamens für jeden Test
+            var dbName = $"cash_{Guid.NewGuid()}";
+            var options = new DbContextOptionsBuilder()
+                .UseInMemoryDatabase(dbName)  
                 .Options;
 
             var db = new AppointmentContext(options);
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
+            db.Database.EnsureCreated();  
             return db;
         }
+
 
         // Erstellt eine leere Datenbank in Debug\net8.0\cash.db
         [Fact]
