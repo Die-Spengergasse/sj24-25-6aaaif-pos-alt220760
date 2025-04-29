@@ -79,6 +79,14 @@ namespace SPG_Fachtheorie.Aufgabe1.Services
 
             try
             {
+                // Prüfen, ob es zugehörige PaymentItems gibt
+                var hasItems = _db.PaymentItems.Any(p => p.Payment.Id == paymentId);
+
+                // Wenn Items existieren und nicht gelöscht werden sollen -> Exception
+                if (hasItems && !deleteItems)
+                    throw new PaymentServiceException("Cannot delete payment without deleting associated items. Use deleteItems=true.");
+
+                // Wenn Items gelöscht werden sollen oder keine existieren
                 if (deleteItems)
                 {
                     var paymentItems = _db.PaymentItems.Where(p => p.Payment.Id == paymentId).ToList();
@@ -91,11 +99,16 @@ namespace SPG_Fachtheorie.Aufgabe1.Services
                 _db.Payments.Remove(payment);
                 _db.SaveChanges();
             }
+            catch (DbUpdateException )
+            {
+                throw new PaymentServiceException("Cannot delete payment with associated items. Use deleteItems=true.");
+            }
             catch (Exception ex)
             {
                 throw new PaymentServiceException(ex.InnerException?.Message ?? ex.Message);
             }
         }
+
     }
 
     public class PaymentServiceException : Exception

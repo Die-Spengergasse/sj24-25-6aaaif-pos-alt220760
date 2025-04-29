@@ -8,6 +8,23 @@ using Xunit;
 namespace SPG_Fachtheorie.Aufgabe1.Test
 {
     [Collection("Sequential")]
+    public class PaymentServicesTests
+    {
+        private AppointmentContext GetEmptyDbContext()
+        {
+            var dbName = $"cash_{Guid.NewGuid()}";
+            var options = new DbContextOptionsBuilder()
+                .UseInMemoryDatabase(dbName) 
+                .Options;
+
+            var db = new AppointmentContext(options);
+            db.Database.EnsureCreated();
+            return db;
+        }
+    }
+
+
+    [Collection("Sequential")]
     public class Aufgabe1Test
     {
         private AppointmentContext GetEmptyDbContext()
