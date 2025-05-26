@@ -40,5 +40,6 @@ if (app.Environment.IsDevelopment())
 app.MapControllers();  // Passt ein Controller zur Adresse? Ja: Diesen ausführen.
 app.Run();
 
+public partial class Program { }
 
 
